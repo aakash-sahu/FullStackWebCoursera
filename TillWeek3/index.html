@@ -173,10 +173,8 @@
         </div>
     </header>
 
-    <!-- Start main page -->
     <div class="container">
 
-        <!-- Courasel -->
         <div class="row row-content">
             <div class="col">
                 <div id="mycarousel" class="carousel slide" data-ride="carousel">
@@ -216,20 +214,11 @@
                     <a class="carousel-control-next" href="#mycarousel" role="button" data-slide="next">
                         <span class="carousel-control-next-icon"></span>
                     </a>
-                    <div class="btn-group" id="carouselButton">
-                        <button class="btn btn-danger btn-sm" id="carousel-pause">
-                            <span class="fa fa-pause"></span>
-                        </button>
-                        <button class="btn btn-danger btn-sm" id="carousel-play">
-                            <span class="fa fa-play"></span>
-                        </button>
-                    </div>
 
                 </div>
             </div>
         </div>
 
-        <!-- Content -->
         <div class="row row-content align-items-center">
             <div class="col-12 col-sm-4 order-sm-last col-md-3">
                 <h3>Our Lipsmacking Culinary Creations</h3>
@@ -384,18 +373,6 @@
                 $('[data-toggle = "tooltip"]').tooltip();
             })
         </script>   -->
-        <!-- Script for carousel with 2 buttons -->
-        <script>
-            $(document).ready( function(){
-                $('#mycarousel').carousel({interval:2000});
-                $('#carousel-pause').click(function(){
-                    $('#mycarousel').carousel('pause');
-                });
-                $('#carousel-play').click(function(){
-                    $('#mycarousel').carousel('cycle')
-                })
-            })
-        </script>
 
 </body>
 
