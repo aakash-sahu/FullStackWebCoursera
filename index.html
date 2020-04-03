@@ -34,7 +34,7 @@
                 </ul>
                 <!-- Login text -->
                 <span class="navbar-text">
-                    <a data-toggle="modal" data-target="#loginModal" href="">
+                    <a id="loginButton"> <!--data-toggle="modal" data-target="#loginModal"-->
                         <span class="fa fa-sign-in"></span> Login
                     </a>
                 </span>
@@ -168,8 +168,8 @@
                     <img src="img/logo.png" class="img-fluid">
                 </div>
                 <div class="col-12 col-sm-3 align-self-center text-center">
-                    <a class="btn btn-sm btn-warning btn-block font-weight-bold nav-link" role="button" 
-                    data-toggle="modal" data-target="#reservetablemodal">Reserve Table</a>
+                    <a id="reserveButton" class="btn btn-sm btn-warning btn-block font-weight-bold nav-link" role="button"
+                    >Reserve Table</a> <!--data-toggle="modal" data-target="#reservetablemodal"-->
                 </div>
             </div>
         </div>
@@ -431,6 +431,14 @@
             })
 
             //Js code to enable modals on clicking the respective links
+            $('document').ready(function(){
+                $('#reserveButton').click(function(){
+                    $('#reservetablemodal').modal('show');
+                })
+                $('#loginButton').click(function(){
+                    $('#loginModal').modal('show');
+                })
+            })
             
         </script>
 
