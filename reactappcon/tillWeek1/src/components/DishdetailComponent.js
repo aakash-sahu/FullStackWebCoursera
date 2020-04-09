@@ -23,10 +23,10 @@ class DishDetails extends Component {
     renderComments(comments){
         const selectedDishComments = comments.map((comment)=> {
             return (
-                <ul key = {Comment.id} className='list-unstyled m-1'>
-                    <li>{comment.comment}</li>
-                    <li className="mb-1 text-muted">-- {comment.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</li>
-                </ul>
+                <div key = {Comment.id} className='list-unstyled m-2'>
+                    <li className= "mb-1">{comment.comment}</li>
+                    <li className="mb-1 text-muted">-- {comment.author}, {Date(comment.date)}</li>
+                </div>
             )
         })
         if (selectedDishComments != null) {
@@ -41,20 +41,17 @@ class DishDetails extends Component {
     render(){
         if (this.props.selectedDish != null){
             return (
-                <div className="container">
-                    <div className="row">
-                        <div className= "col-12 col-md-5 mt-1">
-                            {this.renderDish(this.props.selectedDish)}
-                        </div>
-                        <div className="col-12 col-md-5 mt-1">
-                            <div>
-                                <h4>Comments</h4>
-                                {this.renderComments(this.props.selectedDish['comments'])}
-                            </div>
+                <div className="row">
+                    <div className= "col-12 col-md-5 mt-1">
+                        {this.renderDish(this.props.selectedDish)}
+                    </div>
+                    <div className="col-12 col-md-5 mt-1">
+                        <div>
+                            <h4>Comments</h4>
+                            {this.renderComments(this.props.selectedDish['comments'])}
                         </div>
                     </div>
                 </div>
-
     
             )
         }
