@@ -66,3 +66,12 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Installations and app creation
+
+1. Install node.js (and npm)
+2. Install git (optional)
+3. Install yarn (if using instead of npm)
+4. .........
+5. yarn add font-awesome@4.7.0
+6. yarn add bootstrap-social@5.1.1 
