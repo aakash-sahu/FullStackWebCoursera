@@ -81,7 +81,7 @@ class Contact extends Component {
         //Validate in render function here as form is rendered everytime input changes
         const errors = this.validate(this.state.firstname, this.state.lastname, this.state.telnum, this.state.email);
         // console.log(Object.values(errors).map(v=> v.length).every(x=>x==0));
-        const isEnabled = Object.values(errors).map(v=> v.length).every(x=>x==0);
+        const isEnabled = Object.values(errors).map(v=> v.length).every(x=>x===0);
         
         return (
             <div className="container">
