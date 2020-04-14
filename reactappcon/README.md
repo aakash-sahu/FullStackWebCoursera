@@ -76,3 +76,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 5. yarn add font-awesome@4.7.0
 6. yarn add bootstrap-social@5.1.1 
 7. yarn add react-router-dom@4.2.2
+8. yarn add redux@3.7.2
+9. yarn add react-redux@5.0.7
