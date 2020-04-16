@@ -86,20 +86,20 @@ class CommentForm extends Component {
 }
 
     
-    function RenderDish({selectedDish}){
+    function RenderDish({dish}){
         return (
             <Card>
-                <CardImg src={selectedDish.image} alt={selectedDish.name}/>
+                <CardImg src={dish.image} alt={dish.name}/>
                 <CardBody>
-                    <CardTitle>{selectedDish.name}</CardTitle>
-                    <CardText>{selectedDish.description}</CardText>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
                 </CardBody>
             </Card>
         );
     }
 
     function RenderComments({comments}){
-        const selectedDishComments = comments.map((comment)=> {
+        const dishComments = comments.map((comment)=> {
             return (
                 <ul key = {Comment.id} className='list-unstyled m-1'>
                     <li>{comment.comment}</li>
@@ -107,10 +107,10 @@ class CommentForm extends Component {
                 </ul>
             )
         })
-        if (selectedDishComments != null) {
+        if (dishComments != null) {
             return (
                 <div>
-                    {selectedDishComments}
+                    {dishComments}
                     <CommentForm />
                 </div>
                 );
@@ -123,22 +123,22 @@ class CommentForm extends Component {
 
     const DishDetail = (props) => {
         console.log(props.dish)
-        if (props.selectedDish != null){
+        if (props.dish != null){
             return (
                 <div className="container">
                     <div className="row">
                         <Breadcrumb>
                             <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
-                            <BreadcrumbItem active>{props.selectedDish.name}</BreadcrumbItem>
+                            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
                         </Breadcrumb>
                     </div>
                     <div className="col-12">
-                        <h3>{props.selectedDish.name}</h3>
+                        <h3>{props.dish.name}</h3>
                         <hr />
                     </div>
                     <div className="row">
                         <div className= "col-12 col-md-5 mt-1">
-                            <RenderDish selectedDish = {props.selectedDish} />
+                            <RenderDish dish = {props.dish} />
                         </div>
                         <div className="col-12 col-md-5 mt-1">
                             <h4>Comments</h4>
