@@ -2,7 +2,7 @@
 // Setting this as Container component
 import React, { Component } from 'react';
 import Menu from './MenuComponent';
-import DishDetails from './DishDetailComponent';
+import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Home from './HomeComponent';
@@ -41,7 +41,7 @@ class Main extends Component {
 
     const DishWithId = ({match}) => {
       return (
-        <DishDetails selectedDish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
+        <DishDetail selectedDish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
           comments= {this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))} />
       );
 
