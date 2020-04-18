@@ -79,3 +79,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 8. yarn add redux@3.7.2
 9. yarn add react-redux@5.0.7
 10. yarn add react-redux-form@1.16.8
+11. yarn add redux-thunk@2.2.0
+12. yarn add redux-logger@3.0.6

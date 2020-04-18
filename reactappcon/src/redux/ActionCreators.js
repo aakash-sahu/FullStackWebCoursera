@@ -2,6 +2,7 @@
 //and dispatch actions from the action creators to update system state in redux store
 
 import * as ActionTypes from './ActionTypes';
+import { DISHES} from '../shared/dishes';
 
 export const addComment = (dishId, rating, author, comment) => {
     return (
@@ -16,3 +17,28 @@ export const addComment = (dishId, rating, author, comment) => {
         }
     );
 }
+
+//middleware(thunk) returns as function so with innner func
+export const fetchDishes = () => (dispatch) => {
+    dispatch(dishesLoading(true));
+
+    setTimeout(() => {
+        dispatch(addDishes(DISHES));
+    }, 2000);
+
+}
+
+//other action creators
+export const dishesLoading = () => ({
+    type: ActionTypes.DISHES_LOADING
+});
+
+export const dishesFailed = (errmess) => ({
+    type: ActionTypes.DISHES_FAILED,
+    payload: errmess
+});
+
+export const addDishes = (dishes) => ({
+    type: ActionTypes.ADD_DISHES,
+    payload: dishes
+});
