@@ -81,3 +81,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 10. yarn add react-redux-form@1.16.8
 11. yarn add redux-thunk@2.2.0
 12. yarn add redux-logger@3.0.6
+13. npm install -g json-server
+13.1 Folder - json-server/public -- json-server --watch db.json -p 3001 -d 2000 (port 30001 with delay 2000 ms)
