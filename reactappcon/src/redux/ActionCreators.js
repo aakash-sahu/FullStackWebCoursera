@@ -21,13 +21,28 @@ export const addComment = (dishId, rating, author, comment) => {
 
 //middleware(thunk) returns as function so with innner func to enable aync calls
 export const fetchDishes = () => (dispatch) => {
+
     dispatch(dishesLoading(true));
 
     return fetch(baseUrl + 'dishes')
+        .then(response => {
+            if (response.ok) {
+              return response;  
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + 
+                    response.statusText); //when able to reach server but error response
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess; //when react can't even reach server
+        })
         .then(response => response.json())
-        .then(dishes => dispatch(addDishes(dishes)));
-
-}
+        .then(dishes => dispatch(addDishes(dishes)))
+        .catch(error => dispatch(dishesFailed(error.message)));
+};
 
 //other action creators
 export const dishesLoading = () => ({
@@ -48,8 +63,23 @@ export const addDishes = (dishes) => ({
 export const fetchComments = () => (dispatch) => {
    
     return fetch(baseUrl + 'comments')
+        .then(response => {
+            if (response.ok) {
+            return response;  
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + 
+                    response.statusText); //when able to reach server but error response
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess; //when react can't even reach server
+        })
         .then(response => response.json())
-        .then(comments => dispatch(addComments(comments)));
+        .then(comments => dispatch(addComments(comments)))
+        .catch(error => dispatch(commentsFailed(error.message)));
 
 };
 
@@ -68,10 +98,25 @@ export const fetchPromos = () => (dispatch) => {
     dispatch(promosLoading(true));
 
     return fetch(baseUrl + 'promotions')
+        .then(response => {
+            if (response.ok) {
+            return response;  
+            } else {
+                var error = new Error('Error ' + response.status + ': ' + 
+                    response.statusText); //when able to reach server but error response
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess; //when react can't even reach server
+        })
         .then(response => response.json())
-        .then(promos => dispatch(addPromos(promos)));
+        .then(promos => dispatch(addPromos(promos)))
+        .catch(error => dispatch(promosFailed(error.message)));
 
-}
+};
 
 export const promosLoading = () => ({
     type: ActionTypes.PROMOS_LOADING
