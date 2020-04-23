@@ -17,20 +17,20 @@ class CommentForm extends Component {
             isAddCommentOpen: false
         };
         this.toggleAddCommentModal = this.toggleAddCommentModal.bind(this);
-        this.toggleAddCommentModal = this.toggleAddCommentModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     toggleAddCommentModal() {
         this.setState({
             isAddCommentOpen: !this.state.isAddCommentOpen
         })
-    }
+    };
 
-    handleSubmitAddComment(values){
+    handleSubmit(values) {
         this.toggleAddCommentModal();
         // alert("Current state is: "+ JSON.stringify(values));
-        this.props.addComment(this.props.dishId,values.rating, values.author, values.comment);
-    }
+        this.props.postComment(this.props.dishId,values.rating, values.author, values.comment);
+    };
 
     render() {
         return (
@@ -41,7 +41,7 @@ class CommentForm extends Component {
                     <ModalHeader toggle={this.toggleAddCommentModal}>Submit Comment</ModalHeader>
                     <ModalBody>
                         <div className="container">
-                            <LocalForm onSubmit={(values)=> this.handleSubmitAddComment(values)}>
+                            <LocalForm onSubmit={(values)=> this.handleSubmit(values)}>
                                 <Row className="form-group">
                                     <Label htmlFor="rating">Rating</Label>
                                     <Control.select model=".rating" name="rating" className="form-control">
@@ -102,7 +102,7 @@ class CommentForm extends Component {
         );
     }
 
-    function RenderComments({comments, addComment, dishId}){
+    function RenderComments({comments, postComment, dishId}){
         const dishComments = comments.map((comment)=> {
             return (
                 <ul key = {Comment.id} className='list-unstyled m-1'>
@@ -115,7 +115,7 @@ class CommentForm extends Component {
             return (
                 <div>
                     {dishComments}
-                    <CommentForm dishId={dishId} addComment={addComment} />
+                    <CommentForm dishId={dishId} postComment={postComment} />
                 </div>
                 );
         }
@@ -164,7 +164,7 @@ class CommentForm extends Component {
                         <div className="col-12 col-md-5 mt-1">
                             <h4>Comments</h4>
                             <RenderComments comments = {props.comments} 
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             dishId = {props.dish.id}  />
                         </div>
                     </div>
