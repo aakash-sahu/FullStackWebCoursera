@@ -85,3 +85,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 13.1 Folder - json-server/public -- Run -> json-server --watch db.json -p 3001 -d 2000 (port 30001 with delay 2000 ms)
 14. yarn add cross-fetch@2.1.0
 15. yarn add react-transition-group@2.3.0
+16. yarn add react-animation-components@3.0.0
+16.1 yarn add prop-types@15.6.0
