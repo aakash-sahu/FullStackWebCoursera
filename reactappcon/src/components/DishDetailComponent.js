@@ -105,9 +105,9 @@ class CommentForm extends Component {
     function RenderComments({comments, postComment, dishId}){
         const dishComments = comments.map((comment)=> {
             return (
-                <ul key = {Comment.id} className='list-unstyled m-1'>
-                    <li>{comment.comment}</li>
-                    <li className="mb-1 text-muted">-- {comment.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</li>
+                <ul className='list-unstyled m-1'>
+                    <li key = {Comment.id}>{comment.comment}</li>
+                    <li key = {Comment.id} className="mb-1 text-muted">-- {comment.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</li>
                 </ul>
             )
         })
