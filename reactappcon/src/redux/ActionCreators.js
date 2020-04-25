@@ -4,6 +4,7 @@
 import * as ActionTypes from './ActionTypes';
 // import { DISHES} from '../shared/dishes';
 import { baseUrl } from '../shared/baseUrl';
+import { connectAdvanced } from 'react-redux';
 
 export const addComment = (comment) => ({
             type: ActionTypes.ADD_COMMENT,
@@ -22,7 +23,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
     };
     newComment.date = new Date().toISOString();
 
-    return fetch(baseUrl + 'comments', {
+    return fetch(baseUrl + 'commentss', {
         method:"POST",
         body: JSON.stringify(newComment),
         headers: {
@@ -44,7 +45,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
     .then(response => response.json())
     .then(response => dispatch(addComment(response)))
     .catch(error => { console.log('Post comments', error.message); 
-        alert('Your comment could not be posted\nError: ', error.message);});
+        alert('Your comment could not be posted\nError: '+ error.message);});
 };
 
 //middleware(thunk) returns as function so with innner func to enable aync calls
@@ -197,3 +198,41 @@ export const fetchLeaders = () => (dispatch) => {
         .catch(error => dispatch(leaderFailed(error.message)))
 };
 
+// post the content of the feedback form
+
+export const postFeedback = (firstname, lastname, telnum, email, agree,contactType, message) => (dispatch) => {
+    
+    const newFeedback = {
+        firstname:firstname, 
+        lastname: lastname,
+        telnum: telnum,
+        email: email,
+        agree: agree,
+        contactType: contactType,
+        message: message
+    };
+
+    return fetch(baseUrl + 'feedback', {
+        method: 'POST',
+        body: JSON.stringify(newFeedback),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error '+ response.status+': '+response.statusText);
+            throw error;
+        }
+    }, error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => alert('Your feedback was posted \n'+ JSON.stringify(response)))
+    .catch(error => { console.log('Post feedback', error.message);
+        alert("Your feedback could not be posted\n" + error.message);});
+};

@@ -10,7 +10,7 @@ import { Switch, Route, Redirect, withRouter} from 'react-router-dom'
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { connect } from 'react-redux';
-import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, leadersLoading } from '../redux/ActionCreators' //get action creator and then dispatch
+import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, leadersLoading, postFeedback } from '../redux/ActionCreators' //get action creator and then dispatch
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -32,7 +32,8 @@ const mapDispatchToProps = (dispatch) => ({
   resetFeedbackForm: () => {dispatch(actions.reset('feedback'))},
   fetchComments: () => {dispatch(fetchComments())},
   fetchPromos: () => {dispatch(fetchPromos())},
-  fetchLeaders: () => {dispatch(fetchLeaders())}
+  fetchLeaders: () => {dispatch(fetchLeaders())},
+  postFeedback: (firstname, lastname, telnum, email, agree,contactType, message) => dispatch(postFeedback(firstname, lastname, telnum, email, agree,contactType, message))
 });
 
 class Main extends Component {
@@ -85,6 +86,13 @@ class Main extends Component {
       );
     }
 
+    const ContactUs = () => {
+      return (
+        <Contact resetFeedbackForm = {this.props.resetFeedbackForm} 
+          postFeedback= {this.props.postFeedback} />
+      );
+    }
+
     return (
       <div>
         <Header/>
@@ -94,7 +102,7 @@ class Main extends Component {
               <Route path="/home" component={HomePage} />
               <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
               <Route path="/menu/:dishId" component={DishWithId} />
-              <Route exact path="/contactus" component= {()=> <Contact resetFeedbackForm = {this.props.resetFeedbackForm} />} />
+              <Route exact path="/contactus" component= {ContactUs} />
               <Route path="/aboutus" component= {() => <About leaders = {this.props.leaders}/>} />
               <Redirect to="/home" />
             </Switch>
