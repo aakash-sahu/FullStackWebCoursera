@@ -1,12 +1,16 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
 
 function RenderLeader({leader}) {
+
+    
     return (
             <Media tag="li">
                 <Media left middle>
-                    <Media object src={leader.image} alt={leader.name} />
+                    <Media object src={baseUrl + leader.image} alt={leader.name} />
                 </Media>
                 <Media body className="ml-3">
                     <Media heading>{leader.name}</Media>
@@ -19,16 +23,40 @@ function RenderLeader({leader}) {
     );
 }
 
-function About(props) {
+function ShowLeaders({leaders}) {
 
-    const leaders = props.leaders.map((leader) => {
+    const ShowLeaders = leaders.leaders.map((leader) => {
         return (
             // <p>Leader {leader.name}</p>
             <div key={leader.id} className="col-12 mt-3">
                 <RenderLeader leader = {leader} />
             </div>
         );
-    });
+    })
+    
+        if (leaders.isLoading) {
+            return ( <Loading />);
+        }
+        else if (leaders.errMess) {
+            return (<div><h4>{leaders.errMess}</h4></div>)
+        }
+        else {
+            return (
+                ShowLeaders
+            )
+        }}
+
+
+function About(props) {
+
+    const leaders2 = props.leaders.leaders.map((leader) => {
+                        return (
+                            // <p>Leader {leader.name}</p>
+                            <div key={leader.id} className="col-12 mt-3">
+                                <RenderLeader leader = {leader} />
+                            </div>
+                        );
+                    })
 
     return(
         <div className="container">
@@ -86,8 +114,9 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        {leaders}
-                    </Media>
+                        {/* {leaders2} */}
+                        <ShowLeaders leaders= {props.leaders} />
+                    </Media>  
                 </div>
             </div>
         </div>
