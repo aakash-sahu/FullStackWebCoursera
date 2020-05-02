@@ -58,14 +58,14 @@ function ShowLeaders({leaders}) {
 
 function About(props) {
 
-    const leaders2 = props.leaders.leaders.map((leader) => {
-                        return (
-                            // <p>Leader {leader.name}</p>
-                            <div key={leader.id} className="col-12 mt-3">
-                                <RenderLeader leader = {leader} />
-                            </div>
-                        );
-                    })
+    // const leaders2 = props.leaders.leaders.map((leader) => {
+    //                     return (
+    //                         // <p>Leader {leader.name}</p>
+    //                         <div key={leader.id} className="col-12 mt-3">
+    //                             <RenderLeader leader = {leader} />
+    //                         </div>
+    //                     );
+    //                 })
 
     return(
         <div className="container">

@@ -72,9 +72,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 1. Install node.js (and npm)
 2. Install git (optional)
 3. Install yarn (if using instead of npm)
-4. .........
+4. yarn global add create-react-app or npm install -g create-react-app (use latest version)
+4.1 npx create-react-app reactcon
+4.2 yarn add bootstrap@4.0.0, yarn add reactstrap@5.0.0, yarn add react-popper@0.9.2
 5. yarn add font-awesome@4.7.0
-6. yarn add bootstrap-social@5.1.1 
+6. yarn add bootstrap-social@5.1.1
 7. yarn add react-router-dom@4.2.2
 8. yarn add redux@3.7.2
 9. yarn add react-redux@5.0.7
@@ -87,3 +89,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 15. yarn add react-transition-group@2.3.0
 16. yarn add react-animation-components@3.0.0
 16.1 yarn add prop-types@15.6.0
+17. npm run build (first clean the linting error)

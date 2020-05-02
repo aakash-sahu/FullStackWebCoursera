@@ -10,7 +10,7 @@ import { Switch, Route, Redirect, withRouter} from 'react-router-dom'
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { connect } from 'react-redux';
-import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, leadersLoading, postFeedback } from '../redux/ActionCreators' //get action creator and then dispatch
+import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, postFeedback } from '../redux/ActionCreators' //get action creator and then dispatch
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -38,10 +38,10 @@ const mapDispatchToProps = (dispatch) => ({
 
 class Main extends Component {
   
-  constructor(props) {
-    super(props);
+  // constructor(props) {
+  //   super(props);
 
-  }
+  // }
   
   componentDidMount() {
     this.props.fetchDishes();
@@ -79,12 +79,12 @@ class Main extends Component {
     }
 
     //alternatively --not used
-    const AboutUs = () => {
-      return(
-        <About leaders={this.props.leaders}
-          />
-      );
-    }
+    // const AboutUs = () => {
+    //   return(
+    //     <About leaders={this.props.leaders}
+    //       />
+    //   );
+    // }
 
     const ContactUs = () => {
       return (
