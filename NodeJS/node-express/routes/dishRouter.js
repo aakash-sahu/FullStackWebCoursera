@@ -30,15 +30,16 @@ dishRouter.route('/')
 //router for individual dishes
 dishRouter.route('/:dishId')
 .all((req,res,next) => {
-    res.statusCode = 200;
+    //no matter which request get,put,post,delete...this will be executed first
+    res.statusCode = 200; //HTTP code for success
     res.setHeader('Content-Type', 'text/plain');
-    next();
+    next(); //continue to look for additional specifications down below. the updated req, and response will be passed to next
 })
 .get( (req,res,next) => {
     res.end("Will send details of the dish: " + req.params.dishId +' to you.')
 })
 .post((req,res,next) => {
-    res.statusCode = 403
+    res.statusCode = 403 //HTTP code for not supported
     res.end('Post operation not supported on /dishes/'+ req.params.dishId);
 })
 .put( (req,res,next) => {
