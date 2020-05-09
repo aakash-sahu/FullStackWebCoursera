@@ -20,3 +20,4 @@ Packages to install in the the serverside
         -- id.getTimestamp();
 12. In new folder (node-mongo), npm init and npm install mongodb@3.0.10 --save
 13. Install npm install assert@1.4.1 --save to check for true/false values.
+14. npm install mongoose@5.1.7 --save (for mongoogse ODM)
