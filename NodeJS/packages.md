@@ -7,7 +7,7 @@ Packages to install in the the serverside
 6. Express generator to quickly scaffold out an express application. npm install express-generator@4.16.0 -g
 7. To generate express application, "express <appname>, then go tto new foler and "npm install". Then npm start. Add .gitignore (optional)
 8. Database - install mongo db (document based -- documents -> collection -> database). Add ObjectId if not given to documents. Add bin folder to Path to use command line. Stores data in BJSON (Binary JSON format)
-9. Start Mongodb (first create folder named data) mongod --dbpath=data --bind_ip 127.0.0
+9. Start Mongodb (first create folder named data) mongod --dbpath=data --bind_ip 127.0.0.1
 10. mongo on command line to enter REPL(Read-eval-print-loop) --      
     db (Check database being used. Default is test)
      use conFusion (Change to database confusion)
