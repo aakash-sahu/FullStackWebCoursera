@@ -10,30 +10,27 @@ connect.then((db) => {
 
     console.log('Connected correctly to the server');
 
-    var newDish = Dishes({
+    Dishes.create({
         name: 'Uthappizza',
         description: 'test'
+    })
+    .then((dish) => {
+        console.log(dish);
+        
+        return Dishes.find({}).exec();  //to find all items in the collection. Exec ensures operation is executed.
+    })
+    .then((dishes) => {
+        console.log(dishes);
+
+        return Dishes.remove({}); //deletes all the items
+    })
+    .then(()=> {
+        return mongoose.connection.close();
+    })
+    .catch((err) => {
+        console.log('CAUGHT ERROR IN INNER PROMISE');
+        console.log(err)
     });
-
-    //save will save the dish and return a promise
-    newDish.save()
-        .then((dish) => {
-            console.log(dish);
-            
-            return Dishes.find({});  //to find all items in the collection. Exec ensures operation is executed.
-        })
-        .then((dishes) => {
-            console.log(dishes);
-
-            return Dishes.remove({}); //deletes all the items
-        })
-        .then(()=> {
-            return mongoose.connection.close();
-        })
-        .catch((err) => {
-            console.log('CAUGHT ERROR IN INNER PROMISE');
-            console.log(err)
-        });
     
 })
 .catch((err) => {
