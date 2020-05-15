@@ -73,7 +73,7 @@ dishRouter.route('/:dishId')
     .catch((err) => next(err)) 
 })
 .delete((req,res,next) => {
-    Dishes.findByIdAndDelete(req.params.dishId)
+    Dishes.findByIdAndRemove(req.params.dishId)
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
@@ -133,6 +133,7 @@ dishRouter.route('/:dishId/comments')
             for (var i = (dish.comments.length -1); i >=0; i--) {
                 dish.comments.id(dish.comments[i]._id).remove();
             }
+            //alternative -- replace the for code with this "dish.comments = [];" -- it'll replace the subdocument to empty array.
             dish.save()
             .then((dish) => {
                 res.statusCode = 200;
