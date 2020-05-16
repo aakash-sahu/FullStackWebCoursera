@@ -22,3 +22,4 @@ Packages to install in the the serverside
 13. Install npm install assert@1.4.1 --save to check for true/false values.
 14. npm install mongoose@5.1.7 --save (for mongoogse ODM)
 15. npm install mongoose@5.1.7 mongoose-currency@0.2.0 --save (for integrating the mongodb server in the express API)
+16. npm install express-session@1.15.6 session-file-store@1.2.0 --save (to tract authentiated users using express session)
