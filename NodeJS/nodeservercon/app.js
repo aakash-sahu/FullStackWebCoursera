@@ -34,6 +34,36 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+//adding basic authentication here so only authenticated user can more past this in the app
+//basic http authentication 
+//first add auth function
+function auth (req, res, next) {
+  console.log(req.headers);
+  var authHeader = req.headers.authorization;  //challenge client to provide authetication
+  if(!authHeader){
+    var err = new Error('You are not authenticated');
+    res.setHeader('WWW-Authenticate', 'Basic'); //had typo here. that's why browser auth window was not popping up
+    err.status = 401; //401 is HTTP not authenticated status code
+    return next(err);  
+  }
+  //get username and password from header
+  var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':')  //Buffer converts strings into streams of binary data, then split to get the base 64encoded username and pwd
+  //last split on ':' because after decoding format is username:password
+  var user = auth[0];
+  var pass = auth[1];
+  if (user==='admin' && pass=== 'password'){
+    next(); //authenticated
+  } else {
+    var err = new Error('You are not authenticated');
+    res.setHeader('WWW-Authenticate', 'Basic'); 
+    err.status = 401; 
+    next(err);
+  }
+}
+
+app.use(auth); //open in incognito browser to check -- username/password window not popping up in chrome..only working in postman--resolved.had typo
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
