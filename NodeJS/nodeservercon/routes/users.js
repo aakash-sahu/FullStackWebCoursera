@@ -1,5 +1,6 @@
 var express = require('express');
 const bodyParser = require('body-parser');
+var passport = require('passport');
 
 var User = require('../models/users');
 
@@ -15,81 +16,41 @@ router.get('/', function(req, res, next) {
 //set up routers beyond the /users link.. post method as user will be sending information
 router.post('/signup', (req, res, next) => {
   //expected that username and password will be part of body in user request
-  User.findOne({username: req.body.username})
-  .then((user) => {
-    if(user != null) {
-      var err = new Error('User '+req.body.username+ ' already exists');
-      err.status = 403;
-      next(err);
-    }
-    else {
-      return User.create({
-        username: req.body.username,
-        password: req.body.password
-      })
-    }
-  })
-  .then((user) => {
-    res.statusCode= 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.json({status: 'Registration successful!', user:user});
-  }, (err) => next(err));
-});
-
-//in login reuse the auth function used in authorization
-router.post('/login', (req, res, next) => {
-
-  //if user hasn't authenticated yet, expect user to authenticate first
-  if(!req.session.user) {
-    var authHeader = req.headers.authorization;  //challenge client to provide authetication
-    
-    if(!authHeader){
-      var err = new Error('You are not authenticated');
-      res.setHeader('WWW-Authenticate', 'Basic'); //had typo here. that's why browser auth window was not popping up
-      err.status = 401; //401 is HTTP not authenticated status code
-      return next(err);  
-    }
-    //get username and password from header
-    var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':')  //Buffer converts strings into streams of binary data, then split to get the base 64encoded username and pwd
-    //last split on ':' because after decoding format is username:password
-    var username = auth[0];
-    var password = auth[1];
-    
-    //find the user in the database
-    User.findOne({username: username})
-    .then((user)=> {
-      if (user === null) {
-        var err = new Error('User '+ username+ ' does not exist!');
-        err.status = 403; 
-        return next(err);
+  //PLM provides a register method
+  User.register(new User({username: req.body.username}), 
+    req.body.password, (err, user) => {
+      if(err) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({err: err});
       }
-      else if (user.password !== password) {
-        var err = new Error('Your password is incorrect');
-        err.status = 403; 
-        return next(err);
+      else {
+        //after registration, authenticate the same user using passport
+        passport.authenticate('local')(req, res, () => {
+          res.statusCode= 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({success: true, status:'Registration successful!', username: user.username })
+        });
       }
-      else if (user.username ===username && user.password === password) {
-        req.session.user = 'authenticated'; //set session's user to authenticated
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/plain');
-        res.end('You are authenticated');
-      } 
-    })
-    .catch((err) => next(err))
-  }
-  //else part for the situation when req.session.user is set
-  else {
-    res.statusCode= 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('You are already authenticated!')
-  }
+    });
+  });
+
+//with passport username and pwd expected to be part of body, not authorization header
+//if error in authentiate, passport will take care of sending error msg to client. so next not needed
+//doing passport authenticate adds a user property to the req msg i.e. req.user. then passport will serialize user and save in session
+router.post('/login', passport.authenticate('local'), (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.json({success: true, status: 'You are successfully logged in!', nameuser: req.User});
 });
 
 //log out is get as no information is being sent by user on logout
-router.get('/logout', (req,res) => {
-  if (req.session) {
+router.get('/logout', (req,res, next) => {
+  //following changes because of error in the output -- stil getting error even though everything is running.. will figure out later.
+  if (req.user) {
     req.session.destroy(); //info is removed from server side by destroy method available in session
     res.clearCookie('session-id'); //ask client to delete the cookie named session-id
+    req.logout()
     res.redirect('/'); //redirect user to homepage
   }
   else {
