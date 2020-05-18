@@ -20,8 +20,8 @@ const commentSchema = Schema({
         required: true
     },
     author: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId, //using mongoose population to refer to User model
+        ref: 'User'
     }
     }, {
         timestamps: true

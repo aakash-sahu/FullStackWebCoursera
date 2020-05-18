@@ -6,6 +6,14 @@ var passportLocalMongoose = require('passport-local-mongoose');
 // and encrypts in the mongo db schema
 
 var User = Schema({
+    firstname: {
+        type: String,
+        default: ''
+    },
+    lastname: {
+        type: String,
+        default: ''
+    },
     admin: {
         type: Boolean,
         default: false
