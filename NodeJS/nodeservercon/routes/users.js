@@ -1,6 +1,7 @@
 var express = require('express');
 const bodyParser = require('body-parser');
 var passport = require('passport');
+var authenticate = require('../authenticate')
 
 var User = require('../models/users');
 
@@ -36,12 +37,15 @@ router.post('/signup', (req, res, next) => {
   });
 
 //with passport username and pwd expected to be part of body, not authorization header
-//if error in authentiate, passport will take care of sending error msg to client. so next not needed
+//if error in authenticate, passport will take care of sending error msg to client. so next not needed
 //doing passport authenticate adds a user property to the req msg i.e. req.user. then passport will serialize user and save in session
+// local strategy on first attempt, then issue token, and then use JWT.
 router.post('/login', passport.authenticate('local'), (req, res) => {
+
+  var token = authenticate.getToken({_id: req.user._id}); //create token. include only user ID from user's info
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
-  res.json({success: true, status: 'You are successfully logged in!', nameuser: req.User});
+  res.json({success: true, token: token, status: 'You are successfully logged in!'}); //send token back to client
 });
 
 //log out is get as no information is being sent by user on logout

@@ -24,3 +24,4 @@ Packages to install in the the serverside
 15. npm install mongoose@5.1.7 mongoose-currency@0.2.0 --save (for integrating the mongodb server in the express API)
 16. npm install express-session@1.15.6 session-file-store@1.2.0 --save (to tract authentiated users using express session)
 17. npm install passport@0.4.0 passport-local@1.0.0 passport-local-mongoose@5.0.1 --save (usin passport for authentication)
+18. npm install passport-jwt@4.0.0 jsonwebtoken@8.3.0 --save (to use json web token for authentication)
