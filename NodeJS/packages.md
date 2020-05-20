@@ -26,3 +26,5 @@ Packages to install in the the serverside
 17. npm install passport@0.4.0 passport-local@1.0.0 passport-local-mongoose@5.0.1 --save (usin passport for authentication)
 18. npm install passport-jwt@4.0.0 jsonwebtoken@8.3.0 --save (to use json web token for authentication)
 19. To use mongoose population, first drop old users in mongodb repl: db.users.drop(). Mongoose population is used to populate one document with content from another document.
+20. Admin account setup behind the scenes. Sign up user normally, then go to mongo repl and update admin flag as follows:
+db.users.update({"username":"admin"}, {$set: {"admin":true}})

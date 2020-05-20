@@ -24,7 +24,7 @@ dishRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err)) //pass on the error for error handling later in the process
 })
-.post(authenticate.verifyUser, (req,res,next) => { //adding multiple middleware in order
+.post(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => { //adding multiple middleware in order
     Dishes.create(req.body) // create a new document with body of the request
     .then((dish) => {
         console.log('Dish created', dish.toJSON());
@@ -34,11 +34,11 @@ dishRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err)) 
     })
-.put(authenticate.verifyUser, (req,res,next) => {
+.put(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /dishes');
 })
-.delete(authenticate.verifyUser, (req,res,next) => {
+.delete(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => {
     Dishes.remove({}) //removes all the documents in the schema
     .then((resp) => {
         res.statusCode = 200;
@@ -60,11 +60,11 @@ dishRouter.route('/:dishId')
     }, (err) => next(err))
     .catch((err) => next(err)) 
 })
-.post(authenticate.verifyUser,(req,res,next) => {
+.post(authenticate.verifyUser,authenticate.verifyAdmin,  (req,res,next) => {
     res.statusCode = 403 //HTTP code for not supported
     res.end('Post operation not supported on /dishes/'+ req.params.dishId);
 })
-.put(authenticate.verifyUser, (req,res,next) => {
+.put(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => {
     Dishes.findByIdAndUpdate(req.params.dishId, {
         $set: req.body
     }, {new: true}) //new:true make update function return the updated document
@@ -75,7 +75,7 @@ dishRouter.route('/:dishId')
     }, (err) => next(err))
     .catch((err) => next(err)) 
 })
-.delete(authenticate.verifyUser, (req,res,next) => {
+.delete(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => {
     Dishes.findByIdAndRemove(req.params.dishId)
     .then((resp) => {
         res.statusCode = 200;
@@ -133,7 +133,7 @@ dishRouter.route('/:dishId/comments')
     res.statusCode = 403;
     res.end('PUT operation not supported on /dishes/'+req.params.dishId+'/comments');
 })
-.delete(authenticate.verifyUser, (req,res,next) => {
+.delete(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => {
     Dishes.findById(req.params.dishId) //first find the dish and check if it's available in the db
     .then((dish) => {
         if (dish != null) {
@@ -190,26 +190,36 @@ dishRouter.route('/:dishId/comments/:commentId')
 })
 .put(authenticate.verifyUser, (req,res,next) => {
     Dishes.findById(req.params.dishId)
+    // .populate('comments.author') //not needed here.. only needed later probably
     .then((dish) => {
         //checking if both dish is not null as well comments should notbe null to proceed
         if (dish != null && dish.comments.id(req.params.commentId) != null) {
-            //allowing to change only the rating and the comment, not author
-            if (req.body.rating) {
-                dish.comments.id(req.params.commentId).rating = req.body.rating;
-            }
-            if (req.body.comment) {
-                dish.comments.id(req.params.commentId).comment = req.body.comment;
-            }
-            dish.save()
-            .then((dish) => {
-                Dishes.findById(dish._id)
-                .populate('comments.author')
+            //checking if user is same as one who posted the comment  and then matching the user id to author id in comment
+            console.log("req user id: "+req.user._id + " dish author id: " + dish.comments.id(req.params.commentId).author._id );
+            if (req.user._id.equals(dish.comments.id(req.params.commentId).author._id)) { 
+                //allowing to change only the rating and the comment, not author
+                if (req.body.rating) {
+                    dish.comments.id(req.params.commentId).rating = req.body.rating;
+                }
+                if (req.body.comment) {
+                    dish.comments.id(req.params.commentId).comment = req.body.comment;
+                }
+                dish.save()
                 .then((dish) => {
-                    res.statusCode = 200;
-                    res.setHeader("Content-Type", "application/json");
-                    res.json(dish); 
-                })
-            }, (err) => next(err))
+                    Dishes.findById(dish._id)
+                    .populate('comments.author') // if I comment out this line, only get the id in the author tag in a comment
+                    .then((dish) => {
+                        res.statusCode = 200;
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(dish); 
+                    })
+                }, (err) => next(err))
+            }
+            else {
+                err = new Error('You can modify only your comment!')
+                err.status = 403;
+                return next(err);
+            }
         }
         else if (dish == null) {
             err = new Error('Dish '+ req.params.dishId + ' not found');
@@ -229,17 +239,25 @@ dishRouter.route('/:dishId/comments/:commentId')
     .then((dish) => {
         //checking if both dish is not null as well comments should notbe null to proceed
         if (dish != null && dish.comments.id(req.params.commentId) != null) {
-            dish.comments.id(req.params.commentId).remove();
-            dish.save()
-            .then((dish) => {
-                Dishes.findById(dish._id)
-                .populate('comments.author')
+            console.log("comment author: "+dish.comments.id(req.params.commentId).author._id );
+            if (req.user._id.equals(dish.comments.id(req.params.commentId).author)) { 
+                dish.comments.id(req.params.commentId).remove();
+                dish.save()
                 .then((dish) => {
-                    res.statusCode = 200;
-                    res.setHeader("Content-Type", "application/json");
-                    res.json(dish); 
-            })
-        }, (err) => next(err));
+                    Dishes.findById(dish._id)
+                    .populate('comments.author')
+                    .then((dish) => {
+                        res.statusCode = 200;
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(dish); 
+                })
+            }, (err) => next(err));
+            }
+            else {
+                err = new Error('You can delete only your comment!')
+                err.status = 403;
+                return next(err);
+            }
         }
         else if (dish == null) {
             err = new Error('Dish '+ req.params.dishId + ' not found');
