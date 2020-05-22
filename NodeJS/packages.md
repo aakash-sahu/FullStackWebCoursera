@@ -33,3 +33,4 @@ db.users.update({"username":"admin"}, {$set: {"admin":true}})
     openssl req -new -key private.key -out cert.csr
     openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
     Use https to connect to port _443 and configure Postman
+22. File upload multipart - npm install multer@1.3.1 --save
