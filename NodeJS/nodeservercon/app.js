@@ -31,6 +31,17 @@ connect.then((db) => {
 
 var app = express();
 
+//redirect all requests to https
+app.all('*', (req,res,next) => {
+  if (req.secure) { //if request already on secure port
+    return next();
+  }
+  else {
+    res.redirect(307, 'https://' + req.hostname + ':' +app.get('secPort') + req.url);
+    //307 means --?? user should not change the method
+  }
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

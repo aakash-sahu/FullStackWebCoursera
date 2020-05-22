@@ -28,3 +28,8 @@ Packages to install in the the serverside
 19. To use mongoose population, first drop old users in mongodb repl: db.users.drop(). Mongoose population is used to populate one document with content from another document.
 20. Admin account setup behind the scenes. Sign up user normally, then go to mongo repl and update admin flag as follows:
 db.users.update({"username":"admin"}, {$set: {"admin":true}})
+21. For HTTPS, get a self signed certificate with following commands on linux or Git for windows in the bin folder: 
+    openssl genrsa 1024 > private.key
+    openssl req -new -key private.key -out cert.csr
+    openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
+    Use https to connect to port _443 and configure Postman
