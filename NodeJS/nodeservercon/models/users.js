@@ -14,6 +14,7 @@ var User = Schema({
         type: String,
         default: ''
     },
+    facebookId: String, //user logging in with fb won't have password hash and salt
     admin: {
         type: Boolean,
         default: false

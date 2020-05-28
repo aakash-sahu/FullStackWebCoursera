@@ -35,3 +35,4 @@ db.users.update({"username":"admin"}, {$set: {"admin":true}})
     Use https to connect to port _443 and configure Postman
 22. File upload multipart - npm install multer@1.3.1 --save
 23. For Cross Origin Resource Sharing(CORS) -  npm install cors@2.8.4 --save.. set origin in postman to https link for post, put, delete... to preflight, send via OPTIONS field in postman and set origin in header.. then check response
+24. Using Oauth with FB.. replace index.html, put app id. install npm install passport-facebook-token@3.3.0 --save.. Login using fb on https://localhost:3443/index.html and copy token from browser console. Use token in postman on https://localhost:3443/users/facebook/token. or also include in URL as query parameter
