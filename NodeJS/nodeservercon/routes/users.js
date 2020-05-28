@@ -2,6 +2,7 @@ var express = require('express');
 const bodyParser = require('body-parser');
 var passport = require('passport');
 var authenticate = require('../authenticate')
+const cors = require('./cors');
 
 var User = require('../models/users');
 
@@ -10,7 +11,8 @@ var router = express.Router();
 router.use(bodyParser.json());
 
 /* GET users listing. */
-router.get('/',authenticate.verifyUser,authenticate.verifyAdmin, function(req, res, next) {
+//cors with options in get also as this is done only by admin
+router.get('/',cors.corsWithOptions, authenticate.verifyUser,authenticate.verifyAdmin, function(req, res, next) {
   User.find({})
   .then((users) => {
     res.statusCode=200;
@@ -21,7 +23,7 @@ router.get('/',authenticate.verifyUser,authenticate.verifyAdmin, function(req, r
 });
 
 //set up routers beyond the /users link.. post method as user will be sending information
-router.post('/signup', (req, res, next) => {
+router.post('/signup',cors.corsWithOptions,  (req, res, next) => {
   //expected that username and password will be part of body in user request
   //PLM provides a register method
   User.register(new User({username: req.body.username}), 
@@ -57,7 +59,7 @@ router.post('/signup', (req, res, next) => {
 //if error in authenticate, passport will take care of sending error msg to client. so next not needed
 //doing passport authenticate adds a user property to the req msg i.e. req.user. then passport will serialize user and save in session
 // local strategy on first attempt, then issue token, and then use JWT.
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login',cors.corsWithOptions,  passport.authenticate('local'), (req, res) => {
 
   var token = authenticate.getToken({_id: req.user._id}); //create token. include only user ID from user's info
   res.statusCode = 200;
@@ -66,7 +68,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 });
 
 //log out is get as no information is being sent by user on logout
-router.get('/logout', (req,res, next) => {
+router.get('/logout',cors.corsWithOptions,  (req,res, next) => {
   //following changes because of error in the output -- stil getting error even though everything is running.. will figure out later.
   if (req.user) {
     req.session.destroy(); //info is removed from server side by destroy method available in session

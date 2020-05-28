@@ -34,3 +34,4 @@ db.users.update({"username":"admin"}, {$set: {"admin":true}})
     openssl x509 -req -in cert.csr -signkey private.key -out certificate.pem
     Use https to connect to port _443 and configure Postman
 22. File upload multipart - npm install multer@1.3.1 --save
+23. For Cross Origin Resource Sharing(CORS) -  npm install cors@2.8.4 --save.. set origin in postman to https link for post, put, delete... to preflight, send via OPTIONS field in postman and set origin in header.. then check response
