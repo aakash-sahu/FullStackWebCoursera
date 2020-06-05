@@ -7,26 +7,7 @@ const Currency = mongoose.Types.Currency;
 
 const Schema = mongoose.Schema;
 
-//define the schema for documents
-const commentSchema = Schema({
-    rating: {
-        type: Number,
-        min: 1,
-        max: 5,
-        required: true
-    },
-    comment: {
-        type: String,
-        required: true
-    },
-    author: {
-        type: mongoose.Schema.Types.ObjectId, //using mongoose population to refer to User model
-        ref: 'User'
-    }
-    }, {
-        timestamps: true
-    }
-);
+//deleting the comments schema and moving to comments schema as in react client the comments are separate and include dish id
 
 const dishSchema = new Schema({
     name: {
@@ -58,8 +39,7 @@ const dishSchema = new Schema({
     featured: {
         type: Boolean,
         required: false
-    },
-    comments: [commentSchema]
+    }
 }, {
     timestamps: true //adding this automatically adds createdat and updatedat to schema
 }  

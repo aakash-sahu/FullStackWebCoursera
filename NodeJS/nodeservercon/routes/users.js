@@ -11,6 +11,7 @@ var router = express.Router();
 router.use(bodyParser.json());
 
 /* GET users listing. */
+router.options('*', cors.corsWithOptions, (req, res) => {res.sendStatus(200);} ) //add CORS for all requests if client sends options first
 //cors with options in get also as this is done only by admin
 router.get('/',cors.corsWithOptions, authenticate.verifyUser,authenticate.verifyAdmin, function(req, res, next) {
   User.find({})
@@ -59,12 +60,36 @@ router.post('/signup',cors.corsWithOptions,  (req, res, next) => {
 //if error in authenticate, passport will take care of sending error msg to client. so next not needed
 //doing passport authenticate adds a user property to the req msg i.e. req.user. then passport will serialize user and save in session
 // local strategy on first attempt, then issue token, and then use JWT.
-router.post('/login',cors.corsWithOptions,  passport.authenticate('local'), (req, res) => {
+router.post('/login',cors.corsWithOptions,  (req, res, next) => {
 
-  var token = authenticate.getToken({_id: req.user._id}); //create token. include only user ID from user's info
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.json({success: true, token: token, status: 'You are successfully logged in!'}); //send token back to client
+  // updating authenticate as earlier this only returns unauthorized as response if user can't login
+  //now adding additional functionality to auth 
+  //below auth locl return err, user (if user can log in or not), and info (additional info about why user can't log in)
+  passport.authenticate('local',(err, user, info) => {
+    if (err)
+    return next(err);
+
+    //if user doesn't exist, or pwd is incorrect. that info will be encoded in 'info' object
+    if (!user) { 
+      res.statusCode = 401;
+      res.setHeader('Content-Type', 'application/json');
+      res.json({success: false, status: 'Login Unsuccessful!', err:info}); 
+    }
+    // if reached this point, that mean no error plus user also found. so user can be logged in
+    // passport add method logIn to req
+    req.logIn(user, (err) => {
+        if (err) {
+          res.statusCode = 401;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({success: false, status: 'Login Unsuccessful!', err:'Could not log in user!'});   
+        }
+
+        var token = authenticate.getToken({_id: req.user._id}); //create token. include only user ID from user's info
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: true, status: 'Login Successful!', token: token});   
+    });
+    }) (req, res, next);
 });
 
 //log out is get as no information is being sent by user on logout
@@ -93,6 +118,26 @@ router.get('/facebook/token', passport.authenticate('facebook-token'), (req, res
     res.json({success: true, token: token, status: 'You are successfully logged in!'}); //send token back to client
   }
 });
+
+//add router to check token periodically.Returns true or false if token is still valid
+router.get('/checkJWTToken', cors.corsWithOptions, (req, res) => {
+  passport.authenticate('jwt', {session: false}, (err, user, info) => {
+    if (err)
+    return next(err);
+
+    if (!user) {
+      res.statusCode = 401;
+      res.setHeader('Content-Type', 'application/json');
+      return res.json({status: 'JWT invalid!', success: false, err: info});
+    }
+
+    else {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      return res.json({status: 'JWT Valid!', success: true, user: user});
+    }
+  }) (req, res);
+})
 
 
 module.exports = router;

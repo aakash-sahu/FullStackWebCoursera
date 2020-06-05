@@ -37,16 +37,17 @@ favoriteRouter.route('/')
     Favorites.findOne({user:req.user._id})  
     .then((favs) => {
         if (favs == null) {
-            req.body.user = req.user._id;
+            req.body.user = req.user._id;   //    alternate from other -Favorites.create({user:req.user._id, dishes:req.body})
             console.log('Adding favs: ',req.body);
             Favorites.create(req.body)
             .then((newFav) => {
                 Favorites.findOne({user:req.user._id})
+                .populate('user')
                 .populate('dish')
                 .then((updatedFav) => {
                     res.statusCode=200;
                     res.setHeader('Content-Type','application/json');
-                    res.json(updatedFav.dish);
+                    res.json(updatedFav);
                 }, (err) => next(err))
             }, (err) => next(err))
             .catch((err) => next(err))
@@ -54,20 +55,22 @@ favoriteRouter.route('/')
         else {
             // can try addtoSet method instead of 'for' loop like the pull method is delete by dishID
             //https://mongoosejs.com/docs/api.html#mongoosearray_MongooseArray-addToSet
-            for(var i = 0; i<= req.body.dish.length -1;i++){ 
-                if (favs.dish.indexOf(req.body.dish[i]._id) >=0)
-                    continue;
-                else 
-                    favs.dish.push(req.body.dish[i]);
+            for(var i = 0; i<= req.body.length -1;i++){ //modified as sending array in request
+                if (favs.dish.indexOf(req.body[i]._id) <0)
+                    favs.dish.push(req.body[i]);
+                // else 
+                //     favs.dish.push(req.body[i]);
             }
             favs.save()
             .then((favs) => {
-                Favorites.findOne({user:favs.user._id})
+                // Favorites.findOne({user:favs.user._id})
+                Favorites.findById(favs._id)    //since just created we can search by Id
+                .populate('user')
                 .populate('dish')
                 .then((updatedFav) => {
                     res.statusCode=200;
                     res.setHeader('Content-Type','application/json');
-                    res.json(updatedFav.dish);
+                    res.json(updatedFav);
                 }, (err) => next(err))
             }, (err) => next(err))
             .catch((err) => next(err))
@@ -93,8 +96,34 @@ favoriteRouter.route('/')
 favoriteRouter.route('/:dishId')
 .options(cors.corsWithOptions, (req, res) => {res.sendStatus(200);})
 .get(cors.cors, authenticate.verifyUser, (req,res,next) => {
-    res.statusCode= 403;
-    res.end('GET operation not supported on /favorites/'+req.params.dishId);
+    //check if dish is already favorite of user
+    Favorites.findOne({user:req.user._id})
+    .then((favorites) => {
+        if (!favorites) {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            //if dish not part of favs,set flag exists false
+            return res.json({"exists":false, "favorites":favorites})
+        }
+        else {
+            if (favorites.dish.indexOf(req.params.dishId) < 0) {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                //favorites exists but dish dont' exist in favorites
+                return res.json({"exists":false, "favorites":favorites})
+            }
+            else {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                //favorites exists but dish dont' exist in favorites
+                return res.json({"exists":true, "favorites":favorites})
+            }
+        }
+    }, (err) => next(err))
+    .catch((err) => next(err))
+    // res.statusCode= 403;
+    // res.setHeader('Content-Type', 'text/plain');
+    // res.end('GET operation not supported on /favorites/'+req.params.dishId);
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req,res,next) => {
     Favorites.findOne({user:req.user._id})  
@@ -108,12 +137,14 @@ favoriteRouter.route('/:dishId')
             }
             favs.save()
             .then((favs) => {
-                Favorites.findOne({user:favs.user._id})
+                // Favorites.findOne({user:favs.user._id})
+                Favorites.findById(favs._id)
+                .populate('user')
                 .populate('dish')
                 .then((updatedFav) => {
                     res.statusCode=200;
                     res.setHeader('Content-Type','application/json');
-                    res.json(updatedFav.dish)
+                    res.json(updatedFav)
                 })
             }, (err) => next(err))
             .catch((err) => next(err))
@@ -136,12 +167,14 @@ favoriteRouter.route('/:dishId')
             favs.dish.pull(req.params.dishId); //deleting the dish using dish id.
             favs.save()
             .then((favs) => {
-                Favorites.findOne({user:req.user._id})
+                // Favorites.findOne({user:req.user._id}) 
+                Favorites.findById(favs._id)    //can find by id also
+                .populate('user')
                 .populate('dish')
                 .then((favs) => {
                     res.statusCode=200;
                     res.setHeader('Content-Type','application/json');
-                    res.json(favs.dish)
+                    res.json(favs)
                 })
             }, (err) => next(err))
         }
