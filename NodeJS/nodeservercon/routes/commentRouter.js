@@ -29,7 +29,7 @@ commentRouter.route('/')
         req.body.author = req.user._id //get id of currently logged user
         Comments.create(req.body)
         .then((comment) => {
-            Comments.findById(comments._id)
+            Comments.findById(comment._id)
             .populate('author')
             .then((comment) => {
                 res.statusCode = 200;
@@ -134,3 +134,5 @@ commentRouter.route('/:commentId')
 });
 
 module.exports = commentRouter;
+
+//for comments as subdocument of dishes, need to modify react client
