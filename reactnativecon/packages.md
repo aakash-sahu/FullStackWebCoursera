@@ -11,3 +11,7 @@
 4. expo start or npm start
 5. npm install react-native-elements
 6. npm install react-native-vector-icons
+7. npm uninstall react-navigation
+8. npm install @react-navigation/native
+9. expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context  @react-native-community/masked-view
+10. npm install @react-navigation/stack
