@@ -16,3 +16,4 @@
 9. expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context  @react-native-community/masked-view
 10. npm install @react-navigation/stack
 11. npm install @react-navigation/drawer
+12. npm install redux, react-redux, redux-thunk, redux-logger
