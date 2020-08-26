@@ -11,6 +11,24 @@ import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
 
+import { connect } from 'react-redux'
+import { fetchDishes, fetchComments, fetchPromos, fetchLeaders,   } from "../redux/ActionCreators";
+
+const mapStateToProps = state => {
+    // only map that part of store requird in this page
+    return {
+
+    }
+};
+
+const mapDispatchToProps = dispatch => ({
+    fetchDishes: () => dispatch(fetchDishes()),
+    fetchComments: () => dispatch(fetchComments()),
+    fetchPromos: () => dispatch(fetchPromos()),
+    fetchLeaders: () => dispatch(fetchLeaders())
+});
+
+
 const HeaderOptions = {
     headerStyle: {
         backgroundColor: '#512DA8'
@@ -214,6 +232,13 @@ function MainNavigator({ navigation }) {
 
 
 class Main extends Component {
+    
+componentDidMount() {
+    this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();
+    this.props.fetchLeaders();
+}
 
     render() {
         return (
@@ -248,4 +273,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, ScrollView } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
-import { LEADERS } from '../shared/leaders';
+import { connect } from 'react-redux'
+import { baseUrl } from "../shared/baseUrl";
 
+const mapStateToProps = state => {
+    // only map that part of store requird in this page
+    return {
+        leaders: state.leaders
+    }
+};
 
 function History(props) {
     return(
@@ -17,10 +24,7 @@ function History(props) {
     );
 }
 
-function RenderLeaders(props) {
-
-    const item = props.item;
-    index = props.index
+function RenderLeaders({item, index}) {
 
     if (item != null) {
         return (
@@ -28,7 +32,7 @@ function RenderLeaders(props) {
             key={index}
             title={item.name}
             subtitle={item.description}
-            leftAvatar={{source: require('./images/alberto.png')}}
+            leftAvatar={{source: {uri: baseUrl + item.image }}}
             />
         )
     }
@@ -37,21 +41,22 @@ function RenderLeaders(props) {
     }
 }
 
-function About (props) {
+class About extends Component {
     
+    render() {
         return( 
             <ScrollView>
                 <History />
                 <Card title="Corporate Leadership">
                     <FlatList 
-                        data={LEADERS}
+                        data={this.props.leaders.leaders}
                         renderItem={RenderLeaders}
                         keyExtractor={item => item.id.toString()}
                     />
                 </Card>
             </ScrollView>
         );
-
+    }
 }
 
-export default About;
+export default connect(mapStateToProps)(About);
