@@ -3,6 +3,7 @@ import { View, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { baseUrl } from "../shared/baseUrl";
+import { Loading } from './LoadingComponent';
 
 const mapStateToProps = state => {
     // only map that part of store requird in this page
@@ -16,16 +17,33 @@ class Menu extends Component {
 
     render() {
         const renderMenuItem = ({item, index}) => {
-            return (
-                <Tile 
-                    key={index}
-                    title={item.name}
-                    caption={item.description}
-                    featured
-                    onPress={() => navigate('Dishdetail', { dishId: item.id })} //pass the dishid to the dish detail component
-                    imageSrc={{uri: baseUrl + item.image }}
-                />
-            );
+            
+            if (this.props.dishes.isLoading) {
+                return(
+                    <Loading />
+                );
+            }
+
+            else if (this.props.dishes.errMess) {
+                return (
+                    <View>
+                        <Text>{this.props.dishes.errMess}</Text>
+                    </View>
+                )
+            }
+
+            else {
+                return (
+                    <Tile 
+                        key={index}
+                        title={item.name}
+                        caption={item.description}
+                        featured
+                        onPress={() => navigate('Dishdetail', { dishId: item.id })} //pass the dishid to the dish detail component
+                        imageSrc={{uri: baseUrl + item.image }}
+                    />
+                );
+            }
         }
 
         // one of the props received is navigate
