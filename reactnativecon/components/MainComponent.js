@@ -10,7 +10,8 @@ import Dishdetail from './DishdetailComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-
+import Reservation from './ReservationComponent';
+ 
 import { connect } from 'react-redux'
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders,   } from "../redux/ActionCreators";
 
@@ -166,6 +167,33 @@ function AboutNavigatorScreen({ navigation }) {
     );
 }
 
+// Stack navigator for Reservation Component
+const ReservationNavigator = createStackNavigator();
+
+function ReservationNavigatorScreen({ navigation }) {
+    return (
+        <ReservationNavigator.Navigator
+            initialRouteName='Reservation'
+            screenOptions={HeaderOptions}
+        >
+        <ReservationNavigator.Screen
+            name="Reserve Table"
+            component={Reservation}
+            options={({navigation}) => ({
+                headerLeft: () => (
+                    <Icon 
+                        name='menu'
+                        size={24}
+                        color='white'
+                        onPress={()=>navigation.toggleDrawer()}
+                    />
+                )
+            })}
+        />         
+    </ReservationNavigator.Navigator>
+    );
+}
+
 //Drawer based Navigation
 const Drawer = createDrawerNavigator();
 
@@ -218,6 +246,18 @@ function MainNavigator({ navigation }) {
                         drawerIcon: ({tintColor}) => (
                             <Icon
                             name='info-circle'
+                            type='font-awesome'
+                            size={22}
+                            color={tintColor} 
+                            />
+                        )
+                    }}
+                />
+            <Drawer.Screen name="Reserve Table" component={ReservationNavigatorScreen} 
+                    options={{
+                        drawerIcon: ({tintColor}) => (
+                            <Icon
+                            name='cutlery'
                             type='font-awesome'
                             size={22}
                             color={tintColor} 

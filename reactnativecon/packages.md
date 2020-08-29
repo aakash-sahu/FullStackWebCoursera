@@ -18,3 +18,4 @@
 11. npm install @react-navigation/drawer
 12. npm install redux, react-redux, redux-thunk, redux-logger
 13. npm install -g react-devtools -- react-devtools on command prompt
+14. react-native-datepicker -- date picker not working. replac with another library.
