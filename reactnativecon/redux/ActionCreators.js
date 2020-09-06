@@ -31,6 +31,29 @@ export const addComments = (comments) => ({
     payload: comments
 });
 
+//add a new comment from author -assignment 2
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+    let date = new Date();
+    date = date.toISOString();
+    let newComment = {
+        dishId: dishId,
+        rating: rating,
+        author: author,
+        comment: comment,
+        date: date
+    };
+    setTimeout(() => {
+        dispatch(addComment(newComment))
+    }, 2000);
+} 
+
+// add new user's comment to the dish
+export const addComment = (comment) => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment
+});
+
+// action creators for dishes
 export const fetchDishes = () => (dispatch) => {
 
     dispatch(dishesLoading());
