@@ -16,3 +16,5 @@ export const LEADERS_FAILED = 'LEADERS_FAILED';
 
 export const POST_FAVORITE = 'POST_FAVORITE'; //to add to server
 export const ADD_FAVORITE = 'ADD_FAVORITE'; //and then update in local
+
+export const DELETE_FAVORITE = 'DELETE_FAVORITE';
