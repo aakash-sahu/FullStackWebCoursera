@@ -21,3 +21,4 @@
 14. react-native-datepicker -- date picker not working. replac with another library.
 15. npm install react-native-swipeout
 16. json server code -- json-server --host 0.0.0.0 --port 3001 --watch db.json
+17. npm install react-native-animatable

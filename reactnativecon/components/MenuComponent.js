@@ -4,6 +4,7 @@ import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux'
 import { baseUrl } from "../shared/baseUrl";
 import { Loading } from './LoadingComponent';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     // only map that part of store requird in this page
@@ -34,14 +35,16 @@ class Menu extends Component {
 
             else {
                 return (
-                    <Tile 
-                        key={index}
-                        title={item.name}
-                        caption={item.description}
-                        featured
-                        onPress={() => navigate('Dishdetail', { dishId: item.id })} //pass the dishid to the dish detail component
-                        imageSrc={{uri: baseUrl + item.image }}
-                    />
+                    <Animatable.View animation="fadeInRightBig" duration={2000} delay={1000}>
+                        <Tile 
+                            key={index}
+                            title={item.name}
+                            caption={item.description}
+                            featured
+                            onPress={() => navigate('Dishdetail', { dishId: item.id })} //pass the dishid to the dish detail component
+                            imageSrc={{uri: baseUrl + item.image }}
+                        />
+                    </Animatable.View>
                 );
             }
         }
