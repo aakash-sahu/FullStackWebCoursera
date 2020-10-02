@@ -21,7 +21,12 @@ const mapDispatchToProps = dispatch => ({
 });
 
 function RenderDish(props) {
+
     const dish = props.dish;
+
+    //receiver ref as parameter . obtaining a reference to the particular view. variable view contains the reference to 
+    //programataically add animation
+    handleViewRef = ref => this.view = ref;
 
     //recognize right to left drag gesture
     const recognizeDrag = ({moveX, moveY, dx, dy }) => {
@@ -40,6 +45,12 @@ function RenderDish(props) {
         onStartShouldSetPanResponder: (e, gestureState) => {
             return true;
         }, //called when user gesture begins on screen. gestureState contains information about gesture
+        onPanResponderGrant: () => {
+            //called when panhandler granted permission to perform action
+            //then apply animatable function to the view. this recognizes all gestures not just where we are taking action.
+            this.view.rubberBand(1000)
+                .then(endState => console.log(endState.finished ? 'finished' : 'cancelled')) //endState tell what happened at end of animation
+        },
         onPanResponderEnd: (e, gestureState) => {
             //guess what kind of gesture user has just performed. pass gesturestate as parameter which contains properties of gesture
             if (recognizeDrag(gestureState))
@@ -67,6 +78,7 @@ function RenderDish(props) {
     if (dish != null) {
         return (
             <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+                ref={this.handleViewRef}
                 {...panResponder.panHandlers}> 
                 <Card 
                 featuredTitle={dish.name}
