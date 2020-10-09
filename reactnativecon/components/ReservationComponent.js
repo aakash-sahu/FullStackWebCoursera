@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Switch, Button, Modal, Alert, Picker } from 'react-native';
+// import { Picker } from "@react-native-community/picker";
 import { Card } from "react-native-elements";
 import DatePicker from 'react-native-datepicker';
-import { connect } from 'react-redux';
-
+import * as Animatable from 'react-native-animatable';
 
 class Reservation extends Component {
 
@@ -19,7 +19,25 @@ class Reservation extends Component {
 
     handleReservation() {
         console.log(JSON.stringify(this.state));
-        this.toggleModal();
+        // this.toggleModal();
+        Alert.alert(
+            'Your Reservation OK?',
+            `Number of Guests: ${this.state.guests} 
+            \nSmoking? ${this.state.smoking} 
+            \nDate and Time: ${this.state.date}`,
+            [
+                {
+                    'text': 'Cancel',
+                    onPress: () => this.resetForm(),
+                    style: 'cancel'
+                },
+                {
+                    text: 'OK',
+                    onPress: () => this.resetForm(),
+                }
+            ],
+            {cancelable: false}
+        )
     }
     
     toggleModal() {
@@ -36,7 +54,7 @@ class Reservation extends Component {
 
     render () {
         return (
-            <ScrollView>
+            <Animatable.View animation="zoomIn" duration={2000} delay={500}>
                 <View style={styles.formRow} >
                     <Text style={styles.formLabel}>Number of Guests</Text>
                     <Picker 
@@ -94,7 +112,7 @@ class Reservation extends Component {
                         accessibilityLabel='Learn more about this purple button'
                     />
                 </View>
-                <Modal 
+                {/* <Modal 
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.showModal}
@@ -112,8 +130,8 @@ class Reservation extends Component {
                             title='Close'
                             />
                     </View>
-                </Modal>
-            </ScrollView>
+                </Modal> */}
+            </Animatable.View>
         );
     }
 

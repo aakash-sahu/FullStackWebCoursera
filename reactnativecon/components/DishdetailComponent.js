@@ -40,6 +40,17 @@ function RenderDish(props) {
 
     };
 
+    //recognize left to right drag gesture. assignment
+    const recognizeComment = ({moveX, moveY, dx, dy }) => {
+        //movex - screeen coordinates of recently done gestured, dx,dy - accumulated distance in each axis direction
+        // -dx (postive) means left to right..measured from top right corner of screen
+        if(dx > 200)
+            return true;
+        else
+            return false
+
+    };
+
     //supply callback to panresponder
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (e, gestureState) => {
@@ -53,6 +64,7 @@ function RenderDish(props) {
         },
         onPanResponderEnd: (e, gestureState) => {
             //guess what kind of gesture user has just performed. pass gesturestate as parameter which contains properties of gesture
+            console.log("pan responder end", gestureState);
             if (recognizeDrag(gestureState))
             //if gesture return alert to add dish to favorite. then all callbacks added to View
                 Alert.alert(
@@ -71,6 +83,9 @@ function RenderDish(props) {
                     ],
                     { cancelable: false }
                 )
+
+            if (recognizeComment(gestureState))
+                props.toggleModal();
             return true
         }
     })

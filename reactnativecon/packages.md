@@ -19,7 +19,8 @@
 12. npm install redux, react-redux, redux-thunk, redux-logger
 13. npm install -g react-devtools -- react-devtools on command prompt
 14. react-native-datepicker -- date picker not working. replac with another library.
-15. npm install react-native-swipeout
+15. npm install react-native-swipeout -- deprecated. not being maintained
 16. json server code -- json-server --host 0.0.0.0 --port 3001 --watch db.json
 17. npm install react-native-animatable
 18. npm install redux-persist
+19. for date picker -- npm install @react-native-community/picker --didn't work. weird error
