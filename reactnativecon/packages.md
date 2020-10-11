@@ -27,3 +27,4 @@
 20. Fix the date time picker on reservation page -- npm install @react-native-community/datetimepicker, and npm install moment
 21. For secure store -- expo install expo-secure-store / or npm install
 22. for permissions -- expo install expo-permissions //npm install gave errors
+23. expo install expo-mail-composer --for mail compose
