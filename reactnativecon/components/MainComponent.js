@@ -12,6 +12,7 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoritesComponent';
+import Login from './LoginComponent';
  
 import { connect } from 'react-redux'
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders,   } from "../redux/ActionCreators";
@@ -222,6 +223,33 @@ function FavoritesNavigatorScreen({ navigation }) {
     );
 }
 
+// Stack navigator for Login Component
+const LoginNavigator = createStackNavigator();
+
+function LoginNavigatorScreen({ navigation }) {
+    return (
+        <LoginNavigator.Navigator
+            initialRouteName='Login'
+            screenOptions={HeaderOptions}
+        >
+        <LoginNavigator.Screen
+            name="My Favorites"
+            component={Login}
+            options={({navigation}) => ({
+                headerLeft: () => (
+                    <Icon 
+                        name='menu'
+                        size={24}
+                        color='white'
+                        onPress={()=>navigation.toggleDrawer()}
+                    />
+                )
+            })}
+        />         
+    </LoginNavigator.Navigator>
+    );
+}
+
 //Drawer based Navigation
 const Drawer = createDrawerNavigator();
 
@@ -232,6 +260,18 @@ function MainNavigator({ navigation }) {
             drawerStyle ={{backgroundColor: '#D1C4E9'}}
             drawerContent={props => <CustomDrawerContentComponent {...props}/>}
         >
+            <Drawer.Screen name="Login" component={LoginNavigatorScreen} 
+                options={{
+                    drawerIcon: ({tintColor}) => (
+                        <Icon
+                        name='sign-in'
+                        type='font-awesome'
+                        size={24}
+                        color={tintColor} 
+                        />
+                    )
+                }}
+            />               
             <Drawer.Screen name="Home" 
                 component={HomeNavigatorScreen}
                 options={{
@@ -304,7 +344,7 @@ function MainNavigator({ navigation }) {
                             />
                         )
                     }}
-                />
+                />             
         </Drawer.Navigator>
     );
 }
