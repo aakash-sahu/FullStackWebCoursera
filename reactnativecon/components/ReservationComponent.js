@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Switch, Button, Modal, Alert, TouchableOpacity } from 'react-native';
-import { Picker } from "@react-native-community/picker";
+import { Text, View, ScrollView, StyleSheet, Switch, Button, Modal, Alert,Picker, TouchableOpacity, Platform } from 'react-native';
+// import { Picker } from "@react-native-community/picker";
 import { Icon } from "react-native-elements";
 // import DatePicker from 'react-native-datepicker';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import Moment from 'moment';
 import * as Animatable from 'react-native-animatable';
+import * as Permissions from 'expo-permissions';
+import { Notifications } from 'expo';
 
 class Reservation extends Component {
 
@@ -37,7 +39,9 @@ class Reservation extends Component {
                 },
                 {
                     text: 'OK',
-                    onPress: () => this.resetForm(),
+                    onPress: () => {
+                        this.presentLocalNotification(this.state.date)
+                        this.resetForm()}
                 }
             ],
             {cancelable: false}
@@ -56,6 +60,46 @@ class Reservation extends Component {
             mode: 'date',
             show: false
         });
+    };
+
+    //obtain permission to show notification
+    async obtainNotificationPermission() {
+        //as for permission from device
+        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+        if (permission.status !== 'granted') {
+            //ask again for permission
+            permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
+            if (permission.status !== 'granted') {
+                Alert.alert('Permissio not granted to show notifications!')
+            }
+        }
+        return permission;
+    }
+
+    //
+    async presentLocalNotification(date) {
+        await this.obtainNotificationPermission();
+        Notifications.presentLocalNotificationAsync({
+            title: 'Your Reservation',
+            body: 'Reservation for '+ date + ' requested',
+            ios: {
+                sound:true
+            },
+            android: {
+                channelId: 'reservation',
+                color: '#512DA8'
+            }
+        });
+
+        if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('reservation', {
+                name: 'Confusion',
+                sound: true,
+                // or true for vibrate
+                vibrate: [0, 250, 250, 250],
+                priority: 'max'
+            });
+        }
     }
 
     render () {
@@ -80,7 +124,7 @@ class Reservation extends Component {
                     <Text style={styles.formLabel}>Smoking/Non-Smoking</Text>
                     <Switch style={styles.formItem}
                         value={this.state.smoking}
-                        onTintColor='#512DA8'
+                        trackColor='#512DA8'
                         onValueChange={(value) => this.setState({smoking:value})}
                         >
                     </Switch>

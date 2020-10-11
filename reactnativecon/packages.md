@@ -25,3 +25,5 @@
 18. npm install redux-persist
 19. for date picker -- npm install @react-native-community/picker --didn't work. weird error
 20. Fix the date time picker on reservation page -- npm install @react-native-community/datetimepicker, and npm install moment
+21. For secure store -- expo install expo-secure-store / or npm install
+22. for permissions -- expo install expo-permissions //npm install gave errors
