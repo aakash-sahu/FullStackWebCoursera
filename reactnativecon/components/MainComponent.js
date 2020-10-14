@@ -233,7 +233,7 @@ function LoginNavigatorScreen({ navigation }) {
             screenOptions={HeaderOptions}
         >
         <LoginNavigator.Screen
-            name="My Favorites"
+            name="Login"
             component={Login}
             options={({navigation}) => ({
                 headerLeft: () => (

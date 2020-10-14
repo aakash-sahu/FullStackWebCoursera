@@ -28,3 +28,5 @@
 21. For secure store -- expo install expo-secure-store / or npm install
 22. for permissions -- expo install expo-permissions //npm install gave errors
 23. expo install expo-mail-composer --for mail compose
+24. expo install expo-image-picker -- for image picker
+25. yarn add @react-navigation/bottom-tabs --bottom tab navigator
