@@ -30,3 +30,4 @@
 23. expo install expo-mail-composer --for mail compose
 24. expo install expo-image-picker -- for image picker
 25. yarn add @react-navigation/bottom-tabs --bottom tab navigator
+26. For image manipulation -- expo install expo-image-manipulator

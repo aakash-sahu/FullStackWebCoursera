@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { baseUrl } from "../shared/baseUrl";
 import { NavigationContainer } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 const tabNavigator = createBottomTabNavigator();
 
@@ -176,10 +177,24 @@ class RegisterTab extends Component {
 
             //if user didn't cancel the camera option
             if (!capturedImage.cancelled) {
-                this.setState({ imageUrl: capturedImage.uri}) //image will be loaded in the location in the form where we select image
+                // this.setState({ imageUrl: capturedImage.uri}) //image will be loaded in the location in the form where we select image
+                this.processImage(capturedImage.uri);
             }
         }
-    }
+    };
+
+    //func takes URI, actions (as array of JS objects) ,and output format (e.g. png)
+    processImage = async (imageUri) => {
+        let processedImage = await ImageManipulator.manipulateAsync(
+            imageUri, 
+            [
+                { resize: { width: 400 } }
+            ],
+            { format: 'png' }
+        );
+        this.setState({ imageUrl: processedImage.uri}) 
+        //after this image should be uploaded to imager server and then retrived from server to show on pange
+    };
 
     handleRegister() {
         console.log(JSON.stringify(this.state));
