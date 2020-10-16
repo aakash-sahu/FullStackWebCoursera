@@ -8,6 +8,7 @@ import { baseUrl } from "../shared/baseUrl";
 import { NavigationContainer } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import { Asset } from 'expo-asset';
 
 const tabNavigator = createBottomTabNavigator();
 
