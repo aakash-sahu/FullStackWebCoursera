@@ -32,3 +32,4 @@
 25. yarn add @react-navigation/bottom-tabs --bottom tab navigator
 26. For image manipulation -- expo install expo-image-manipulator, expo install expo-asset for asset
 27. Net info - expo install @react-native-community/netinfo 
+28. For calendar API -- expo install expo-calendar
