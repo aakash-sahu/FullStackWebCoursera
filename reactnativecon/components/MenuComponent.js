@@ -35,7 +35,7 @@ class Menu extends Component {
 
             else {
                 return (
-                    <Animatable.View animation="fadeInRightBig" duration={2000} delay={1000}>
+                    <Animatable.View useNativeDriver={true} animation="fadeInRightBig" duration={2000} delay={1000}>
                         <Tile 
                             key={index}
                             title={item.name}

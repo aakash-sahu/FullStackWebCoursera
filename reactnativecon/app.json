@@ -17,10 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "net.food.reactnativecon.reactnativecon"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "package": "net.food.reactnativecon.reactnativecon"
+    },
+    "android": {
+      "package": "net.food.reactnativecon.reactnativecon"
     }
   }
 }

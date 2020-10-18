@@ -33,3 +33,5 @@
 26. For image manipulation -- expo install expo-image-manipulator, expo install expo-asset for asset
 27. Net info - expo install @react-native-community/netinfo 
 28. For calendar API -- expo install expo-calendar
+29. To build update app.json and run expo build:android to build for android
+30. To eject run npm run eject. To keep using expo APIs, need to use expo kit.

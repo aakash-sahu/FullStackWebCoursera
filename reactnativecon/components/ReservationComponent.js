@@ -107,10 +107,13 @@ class Reservation extends Component {
 
     // Obtain the calendar permission
     async obtainCalendarPermission() {
-        let calendarPermission = await Permissions.askAsync(Permissions.CALENDAR);
+        let calendarPermission = await Permissions.getAsync(Permissions.CALENDAR);
 
         if (calendarPermission.status !== 'granted') {
+            calendarPermission = await Permissions.askAsync(Permissions.CALENDAR);
+            if (calendarPermission.status !== 'granted') {
             Alert.alert('Permission not granted to for calendar!');
+            }
         }
         return calendarPermission;
     };
@@ -157,7 +160,7 @@ class Reservation extends Component {
 
     render () {
         return (
-            <Animatable.View animation="zoomIn" duration={2000} delay={500}>
+            <Animatable.View useNativeDriver={true} animation="zoomIn" duration={2000} delay={500}>
                 <View style={styles.formRow} >
                     <Text style={styles.formLabel}>Number of Guests</Text>
                     <Picker 

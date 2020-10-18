@@ -16,7 +16,7 @@ function Contact (props) {
 
         return( 
             <ScrollView>
-                <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                <Animatable.View useNativeDriver={true} animation="fadeInDown" duration={2000} delay={1000}>
                     <Card title="Contact Information" >
                         <Text>
                             121, Clear Water Bay Road  {'\n'} 

@@ -61,7 +61,7 @@ class About extends Component {
         else if (this.props.leaders.errMess) {
             return (
                 <ScrollView>
-                    <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                    <Animatable.View useNativeDriver={true} animation="fadeInDown" duration={2000} delay={1000}>
                         <History />
                         <Card title="Corporate Leadership"> 
                             <Text>{this.props.leaders.errMess}</Text>
@@ -74,7 +74,7 @@ class About extends Component {
         else {
             return( 
                 <ScrollView>
-                    <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                    <Animatable.View useNativeDriver={true} animation="fadeInDown" duration={2000} delay={1000}>
                         <History />
                         <Card title="Corporate Leadership">
                             <FlatList 

@@ -48,6 +48,7 @@ function RenderDish(props) {
             return true;
         else
             return false
+        //for just return dx > 200
 
     };
 
@@ -103,7 +104,7 @@ function RenderDish(props) {
 
     if (dish != null) {
         return (
-            <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+            <Animatable.View useNativeDriver={true} animation="fadeInDown" duration={2000} delay={1000}
                 ref={this.handleViewRef}
                 {...panResponder.panHandlers}> 
                 <Card 
@@ -162,7 +163,7 @@ function RenderComments(props) {
     };
 
     return (
-        <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>
+        <Animatable.View useNativeDriver={true} animation="fadeInUp" duration={2000} delay={1000}>
             <Card title='Comments'>
                 <FlatList
                     data={comments}
