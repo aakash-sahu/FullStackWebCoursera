@@ -51,7 +51,7 @@
     "install": "^0.13.0",
     "jit-grunt": "^0.10.0",
     "lite-server": "^2.3.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "npm": "^6.14.4",
     "onchange": "^6.1.0",
     "parallelshell": "^3.0.1",
