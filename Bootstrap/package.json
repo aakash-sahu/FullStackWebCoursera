@@ -22,7 +22,7 @@
   "devDependencies": {
     "autoprefixer": "^9.7.5",
     "browser": "^0.2.6",
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.29.1",
     "cssmin": "^0.4.3",
     "del": "^5.1.0",
     "grunt": "^1.0.2",
